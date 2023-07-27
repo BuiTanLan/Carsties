@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 
 services:
   auctionservice:
@@ -12,3 +12,16 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  postgres:
+    container_name: postgres.db
+    environment:
+      - POSTGRES_USER=tanlan
+      - POSTGRES_PASSWORD=admin1234
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - local
