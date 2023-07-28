@@ -3,6 +3,8 @@ using AuctionService.DTOs;
 using AuctionService.Entities;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Contracts;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +12,7 @@ namespace AuctionService.Controllers;
 
 [ApiController]
 [Route("api/auctions")]
-public class AuctionsController(AuctionDbContext context, IMapper mapper) : ControllerBase
+public class AuctionsController(AuctionDbContext context, IMapper mapper, IPublishEndpoint publishEndpoint) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions(string date)
@@ -46,12 +48,15 @@ public class AuctionsController(AuctionDbContext context, IMapper mapper) : Cont
 
         context.Auctions.Add(auction);
 
+        var newAuction = mapper.Map<AuctionDto>(auction);
+
+        await publishEndpoint.Publish(mapper.Map<AuctionCreated>(newAuction));
+
         var result = await context.SaveChangesAsync() > 0;
 
         if (!result) return BadRequest("Could not save changes to the DB");
 
-        return CreatedAtAction(nameof(GetAuctionById),
-            new {auction.Id}, mapper.Map<AuctionDto>(auction));
+        return CreatedAtAction(nameof(GetAuctionById),new { auction.Id }, newAuction);
     }
 
     [HttpPut("{id:guid}")]
@@ -70,6 +75,8 @@ public class AuctionsController(AuctionDbContext context, IMapper mapper) : Cont
         auction.Item.Mileage = updateAuctionDto.Mileage ?? auction.Item.Mileage;
         auction.Item.Year = updateAuctionDto.Year ?? auction.Item.Year;
 
+        await publishEndpoint.Publish(mapper.Map<AuctionUpdated>(auction));
+
         var result = await context.SaveChangesAsync() > 0;
 
         if (result) return Ok();
@@ -87,6 +94,8 @@ public class AuctionsController(AuctionDbContext context, IMapper mapper) : Cont
         // TODO: check seller == username
 
         context.Auctions.Remove(auction);
+
+        await publishEndpoint.Publish<AuctionDeleted>(new { Id = auction.Id.ToString() });
 
         var result = await context.SaveChangesAsync() > 0;
 
