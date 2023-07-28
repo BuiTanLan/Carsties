@@ -11,8 +11,12 @@ services:
   postgres:
     image: bitnami/postgresql:latest
 
+  mongodb:
+    image: bitnami/mongodb:latest
+
 networks:
   local:
     driver: bridge
 volumes:
   postgres_data:
+  mongo_data:
