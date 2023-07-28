@@ -16,12 +16,24 @@ services:
   postgres:
     container_name: postgres.db
     environment:
-      - POSTGRES_USER=tanlan
-      - POSTGRES_PASSWORD=admin1234
+      - POSTGRESQL_USERNAME=tanlan
+      - POSTGRESQL_PASSWORD=admin1234
     restart: always
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - local
+
+  mongodb:
+    container_name: mongodb
+    environment:
+      - MONGODB_USERNAME=root
+      - MONGODB_PASSWORD=mongopw
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/var/lib/mongodb/data
     networks:
       - local
