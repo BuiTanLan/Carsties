@@ -2,13 +2,11 @@
 
 const nextConfig = {
     experimental: {
-        serverActions: true
+        serverActions: true,
     },
     images: {
-        domains: [
-            'cdn.pixabay.com'
-        ]
-    }
-}
+        domains: ['cdn.pixabay.com'],
+    },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
