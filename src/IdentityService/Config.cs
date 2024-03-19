@@ -24,21 +24,23 @@ public static class Config
             {
                 ClientId = "postman",
                 ClientName = "Postman",
-                AllowedScopes = {"openid", "profile", "auctionApp"},
-                RedirectUris = {"https://www.getpostman.com/oauth2/callback"},
-                ClientSecrets = new[] {new Secret("NotASecret".Sha256())},
-                AllowedGrantTypes = {GrantType.ResourceOwnerPassword}
+                AllowedScopes = { "openid", "profile", "auctionApp" },
+                RedirectUris = { "https://www.getpostman.com/oauth2/callback" },
+                ClientSecrets = new[] { new Secret("NotASecret".Sha256()) },
+                AllowedGrantTypes = { GrantType.ResourceOwnerPassword }
             },
             new()
             {
                 ClientId = "nextApp",
                 ClientName = "nextApp",
-                ClientSecrets = {new Secret("secret".Sha256())},
+                ClientSecrets = { new Secret("secret".Sha256()) },
                 AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                 RequirePkce = false,
-                RedirectUris = {"http://localhost:3000/api/auth/callback/id-server"},
+                RedirectUris = { "http://localhost:3000/api/auth/callback/id-server" },
                 AllowOfflineAccess = true,
-                AllowedScopes = {"openid", "profile", "auctionApp"},
-                AccessTokenLifetime = 3600*24*30
-            }        };
+                AllowedScopes = { "openid", "profile", "auctionApp" },
+                AccessTokenLifetime = 3600 * 24 * 30,
+                AlwaysIncludeUserClaimsInIdToken = true
+            }
+        };
 }
