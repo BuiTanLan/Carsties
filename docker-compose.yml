@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   auctionservice:
@@ -9,10 +9,10 @@ services:
 
 
   postgres:
-    image: bitnami/postgresql:latest
+    image: postgresql:latest
 
   mongodb:
-    image: bitnami/mongodb:latest
+    image: mongodb:latest
 
 networks:
   local:

@@ -30,7 +30,7 @@ public class Index(IDeviceFlowInteractionService interaction,
 
     public async Task<IActionResult> OnGet(string userCode)
     {
-        if (String.IsNullOrWhiteSpace(userCode))
+        if (string.IsNullOrWhiteSpace(userCode))
         {
             View = new ViewModel();
             Input = new InputModel();

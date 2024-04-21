@@ -1,5 +1,6 @@
 import './globals.css';
 import Navbar from './nav/Navbar';
+import { ReactNode } from 'react';
 
 export const metadata = {
 	title: 'Carsties',
@@ -9,7 +10,7 @@ export const metadata = {
 export default function RootLayout({
 	children,
 }: {
-	children: React.ReactNode;
+	children: ReactNode;
 }) {
 	return (
 		<html lang='en'>

@@ -12,11 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddHttpClient<AuctionSvcHttpClient>().AddPolicyHandler(GetPolicy());
-builder.Services.AddMassTransit(x =>
+builder.Services.AddMassTransit(busConfig =>
 {
-    x.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
-    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
-    x.UsingRabbitMq((context, cfg) =>
+    busConfig.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
+    busConfig.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
+    busConfig.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host(builder.Configuration["RabbitMq:Host"], "/", host =>
         {
